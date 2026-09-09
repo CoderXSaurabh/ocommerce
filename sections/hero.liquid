@@ -1,0 +1,118 @@
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+
+<div class="hero">
+  <div class="hero__media">
+    {% if section.settings.background_image %}
+      <img
+        src="{{ section.settings.background_image | image_url: width: 1920 }}"
+        srcset="
+          {{ section.settings.background_image | image_url: width: 750 }} 750w,
+          {{ section.settings.background_image | image_url: width: 1100 }} 1100w,
+          {{ section.settings.background_image | image_url: width: 1440 }} 1440w,
+          {{ section.settings.background_image | image_url: width: 1920 }} 1920w
+        "
+        sizes="100vw"
+        alt="{{ section.settings.background_image.alt | escape }}"
+        loading="eager"
+        width="{{ section.settings.background_image.width }}"
+        height="{{ section.settings.background_image.height }}"
+        class="hero__image"
+      >
+    {% else %}
+      <div class="hero__placeholder">
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="hero__content">
+    {% if section.settings.headline_type == 'image' and section.settings.headline_image %}
+      <img
+        src="{{ section.settings.headline_image | image_url: width: 800 }}"
+        alt="{{ section.settings.headline_image.alt | escape | default: shop.name }}"
+        width="{{ section.settings.headline_image.width }}"
+        height="{{ section.settings.headline_image.height }}"
+        class="hero__headline-image"
+      >
+    {% elsif section.settings.headline_text != blank %}
+      <h1 class="hero__headline">{{ section.settings.headline_text }}</h1>
+    {% endif %}
+
+    {% if section.settings.button_label != blank and section.settings.button_collection != blank %}
+      <a href="{{ section.settings.button_collection.url }}" class="hero__button">
+        {{ section.settings.button_label }}
+      </a>
+    {% endif %}
+  </div>
+
+  {% if section.settings.show_reviews_tab %}
+    <a href="#" class="hero__reviews-tab">
+      <span>{{ section.settings.reviews_tab_text | default: 'Reviews' }}</span>
+    </a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "headline_type",
+      "label": "Headline type",
+      "options": [
+        { "value": "text", "label": "Text" },
+        { "value": "image", "label": "Image" }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "text",
+      "id": "headline_text",
+      "label": "Headline text",
+      "default": "Spring Break",
+      "visible_if": "{{ section.settings.headline_type == 'text' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "headline_image",
+      "label": "Headline image",
+      "visible_if": "{{ section.settings.headline_type == 'image' }}"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop the collection"
+    },
+    {
+      "type": "collection",
+      "id": "button_collection",
+      "label": "Button collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews_tab",
+      "label": "Show reviews tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_tab_text",
+      "label": "Reviews tab text",
+      "default": "Reviews",
+      "visible_if": "{{ section.settings.show_reviews_tab }}"
+    }
+  ],
+  "presets": [
+    { "name": "Hero" }
+  ]
+}
+{% endschema %}
