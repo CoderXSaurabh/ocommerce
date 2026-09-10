@@ -20,9 +20,10 @@
         class="best-sellers-image-text__heading"
         style="
           --text-image: url('{{ section.settings.image | image_url: width: 2400 }}');
-          font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+          font-family: 'pinyon script';
           font-style: {{ section.settings.text_style }};
           text-transform: {{ section.settings.text_transform }};
+          
         "
       >
         {{ section.settings.heading }}
@@ -63,32 +64,39 @@
     justify-content: center;
     text-align: center;
   }
-
+  #best-sellers-{{ section.id }} .best-sellers-image-text__inner {
+    line-height: calc({{ 'var(--text-size)' }} + 40px);
+  }
+  #best-sellers-{{ section.id }} .best-sellers-image-text__heading p{
+    margin : 0;
+  }
+  #best-sellers-{{ section.id }} .best-sellers-image-text__heading p strong{
+    font-weight: 400;
+    font-family: 'instrument serif';
+  }
   #best-sellers-{{ section.id }} .best-sellers-image-text__heading {
     margin: 0;
     padding: 0;
     max-width: 100%;
-
     font-size: var(--text-size);
     line-height: 0.82;
     font-weight: var(--text-weight);
     letter-spacing: var(--letter-spacing);
-
-    /*
-      The selected image becomes the texture/background INSIDE the letters.
-      The image itself is not displayed as a normal background block.
-    */
-    background-image: var(--text-image);
-    background-size: {{ section.settings.image_size }};
-    background-position: {{ section.settings.image_position }};
-    background-repeat: no-repeat;
-
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-
+    color: var(--text-color);
     display: inline-block;
+  }
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    #best-sellers-{{ section.id }} .best-sellers-image-text__heading {
+      background-image: var(--text-image);
+      background-size: {{ section.settings.image_size }};
+      background-position: {{ section.settings.image_position }};
+      background-repeat: no-repeat;
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
   }
 
   #best-sellers-{{ section.id }} .best-sellers-image-text__heading--plain {
@@ -108,6 +116,7 @@
       font-size: var(--mobile-text-size);
       line-height: 0.86;
     }
+   
   }
 </style>
 
@@ -118,10 +127,10 @@
   "class": "best-sellers-image-text-section",
   "settings": [
     {
-      "type": "text",
+      "type": "richtext",
       "id": "heading",
       "label": "Heading",
-      "default": "Best sellers"
+      "default": "<p>Best sellers</p>"
     },
     {
       "type": "image_picker",
@@ -238,7 +247,7 @@
       "min": -5,
       "max": 10,
       "step": 0.5,
-      "default": -2,
+      "default": -5,
       "unit": "px"
     },
     {

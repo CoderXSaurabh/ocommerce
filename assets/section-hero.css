@@ -71,8 +71,11 @@
   text-decoration: none;
   border-radius: 2px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0px;
   transition: opacity 0.2s ease;
+  font-family: "Inter";
+  font-weight: 600;
+  font-size: 16px;
 }
 
 #shopify-{{ section.id }} .hero__button:hover {

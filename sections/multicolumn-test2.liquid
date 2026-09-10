@@ -10,7 +10,7 @@
     --global-text: {{ section.settings.global_text_color }};
   "
 >
-  <div class="coming-soon-wrapper">
+  <div class="coming-soon-wrapper page-width">
 
     {% for block in section.blocks %}
 
@@ -108,6 +108,7 @@
                   <span class="countdown-number" data-days>00</span>
                   <span class="countdown-label">{{ block.settings.days_label }}</span>
                 </div>
+                :
               {% endif %}
 
               {% if block.settings.show_hours %}
@@ -115,6 +116,7 @@
                   <span class="countdown-number" data-hours>00</span>
                   <span class="countdown-label">{{ block.settings.hours_label }}</span>
                 </div>
+                :
               {% endif %}
 
               {% if block.settings.show_minutes %}
@@ -122,6 +124,10 @@
                   <span class="countdown-number" data-minutes>00</span>
                   <span class="countdown-label">{{ block.settings.minutes_label }}</span>
                 </div>
+                
+              {% endif %}
+              {% if block.settings.show_seconds %}
+                  :
               {% endif %}
 
               {% if block.settings.show_seconds %}
@@ -260,15 +266,12 @@
   }
 
   #coming-soon-{{ section.id }} .coming-soon-wrapper {
-    width: 80%;
-    max-width: var(--section-width);
+    width: 100%;
+   
     margin: 0 auto;
-
     display: grid;
     grid-template-columns: 1fr 1fr;
-
     gap: var(--gap);
-
     align-items: stretch;
   }
 
@@ -441,49 +444,28 @@
     margin-top: 2px;
   }
 
-
-  /* Individual timer */
-
   #coming-soon-{{ section.id }} .countdown-item {
-
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: flex-start;
-
     min-width: 27px;
   }
 
-
-  /* Number box */
-
   #coming-soon-{{ section.id }} .countdown-number {
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     width: 34px;
     min-width: 34px;
     height: 34px;
-
     background: var(--timer-bg);
-
     color: var(--timer-text);
-
     border-radius: 2px;
     box-sizing: border-box;
-
     font-size: var(--timer-size);
-
     line-height: 1;
-
     letter-spacing: var(--timer-letter-spacing);
-
     font-weight: var(--timer-weight);
   }
 
@@ -491,17 +473,12 @@
   /* Timer labels */
 
   #coming-soon-{{ section.id }} .countdown-label {
-
+    font-family: 'pinyon script';
     margin-top: 5px;
-
     font-size: var(--label-size);
-
     line-height: 1;
-
     font-weight: var(--body-weight);
-
     letter-spacing: var(--letter-spacing);
-
     text-transform: none;
   }
 
@@ -568,14 +545,9 @@
   /* Remove default paragraph margin */
 
   #coming-soon-{{ section.id }} .newsletter-description p {
-
+    font-family: Inter, sans-serif;
     margin: 0;
   }
-
-
-  /* =========================================
-     NEWSLETTER FORM
-  ========================================= */
 
   #coming-soon-{{ section.id }} .newsletter-form {
     width: 100%;
@@ -630,31 +602,19 @@
   }
 
 
-  /* Notify button */
-
   #coming-soon-{{ section.id }} .newsletter-button {
-
     flex-shrink: 0;
-
     border: 0;
-
     background: transparent;
-
     color: var(--newsletter-button-color);
-
     padding: 3px 0 3px 8px;
-
     cursor: pointer;
-
     font-size: var(--button-size);
-
     line-height: 1;
-
     font-weight: var(--button-weight);
-
     text-transform: uppercase;
-
     white-space: nowrap;
+    font-family: Inter, sans-serif;
   }
 
 
@@ -692,7 +652,7 @@
 
     #coming-soon-{{ section.id }} .coming-soon-block {
 
-      aspect-ratio: 4 / 3;
+      aspect-ratio: auto;
     }
 
     #coming-soon-{{ section.id }} .countdown-content,
@@ -1483,7 +1443,7 @@
           "id": "button_size",
           "label": "Button text size",
           "min": 7,
-          "max": 14,
+          "max": 18,
           "step": 1,
           "default": 7,
           "unit": "px"

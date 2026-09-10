@@ -25,7 +25,10 @@
               | image_url: width: 2400
               | image_tag:
                 class: 'hero__image',
-                loading: 'lazy'
+                loading: 'lazy',
+                widths: '750, 1100, 1440, 1920, 2400',
+                sizes: '100vw',
+                alt: block.settings.image.alt | default: shop.name
             }}
           {% else %}
             {{ 'lifestyle-1' | placeholder_svg_tag: 'hero__placeholder' }}
@@ -98,7 +101,7 @@
     </button>
   {% endif %}
 
-  {% if section.settings.show_dots %}
+    {% if section.settings.show_dots %}
     <div class="hero-slider__dots">
       {% for block in section.blocks %}
         <button
@@ -113,60 +116,82 @@
 
 </div>
 </section>
+
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const slider = document.querySelector('.hero-slider');
+  (function () {
+    function initHeroSlider(sectionId) {
+      const slider = document.getElementById('shopify-' + sectionId);
+      if (!slider || slider.dataset.sliderInitialized === 'true') return;
+      slider.dataset.sliderInitialized = 'true';
 
-  if (!slider) return;
+      const slides = slider.querySelectorAll('.hero-slide');
+      const dots = slider.querySelectorAll('.hero-slider__dot');
+      const prev = slider.querySelector('.hero-slider__prev');
+      const next = slider.querySelector('.hero-slider__next');
 
-  const slides = slider.querySelectorAll('.hero-slide');
-  const dots = slider.querySelectorAll('.hero-slider__dot');
-  const prev = slider.querySelector('.hero-slider__prev');
-  const next = slider.querySelector('.hero-slider__next');
+      let currentSlide = 0;
 
-  let currentSlide = 0;
+      function showSlide(index) {
+        if (!slides.length) return;
+        currentSlide = (index + slides.length) % slides.length;
 
-  function showSlide(index) {
-    if (!slides.length) return;
+        slides.forEach((slide, i) => {
+          slide.classList.toggle('is-active', i === currentSlide);
+        });
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('is-active', i === currentSlide);
+        });
+      }
 
-    currentSlide = (index + slides.length) % slides.length;
+      if (next) {
+        next.addEventListener('click', function () {
+          showSlide(currentSlide + 1);
+        });
+      }
 
-    slides.forEach((slide, i) => {
-      slide.classList.toggle('is-active', i === currentSlide);
+      if (prev) {
+        prev.addEventListener('click', function () {
+          showSlide(currentSlide - 1);
+        });
+      }
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', function () {
+          showSlide(i);
+        });
+      });
+
+      {% if section.settings.autoplay %}
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefersReducedMotion) {
+          setInterval(function () {
+            showSlide(currentSlide + 1);
+          }, {{ section.settings.autoplay_speed | times: 1000 }});
+        }
+      {% endif %}
+    }
+
+    function boot() {
+      initHeroSlider('{{ section.id }}');
+    }
+
+    document.addEventListener('DOMContentLoaded', boot);
+
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        boot();
+      }
     });
 
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('is-active', i === currentSlide);
-    });
-  }
-
-  if (next) {
-    next.addEventListener('click', function () {
-      showSlide(currentSlide + 1);
-    });
-  }
-
-  if (prev) {
-    prev.addEventListener('click', function () {
-      showSlide(currentSlide - 1);
-    });
-  }
-
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', function () {
-      showSlide(i);
-    });
-  });
-
-  {% if section.settings.autoplay %}
-    setInterval(function () {
-      showSlide(currentSlide + 1);
-    }, {{ section.settings.autoplay_speed | times: 1000 }});
-  {% endif %}
-});
+    if (document.readyState !== 'loading') {
+      boot();
+    }
+  })();
 </script>
+
 {% schema %}
 {
+  "name": "Hero slider",
   "settings": [
     {
       "type": "range",
@@ -215,6 +240,19 @@ document.addEventListener('DOMContentLoaded', function () {
       "id": "show_dots",
       "label": "Show dots",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews_tab",
+      "label": "Show reviews tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_tab_text",
+      "label": "Reviews tab text",
+      "default": "Reviews",
+      "visible_if": "{{ section.settings.show_reviews_tab }}"
     }
   ],
   "blocks": [

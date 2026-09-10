@@ -100,6 +100,15 @@
                 {% endfor %}
 
                 {% if color_option_index >= 0 %}
+                  {% assign color_list = '' %}
+                  {% for variant in product.variants %}
+                    {% assign color_list = color_list | append: variant.options[color_option_index] | append: ',,' %}
+                  {% endfor %}
+                  {% assign color_array = color_list | split: ',,' | uniq %}
+                  {% assign color_count = color_array | size %}
+                  {% assign desktop_limit = section.settings.swatch_limit_desktop %}
+                  {% assign mobile_limit = section.settings.swatch_limit_mobile %}
+
                   {% assign color_values = '' %}
                   <div
                     class="collection-product-card__variants"
@@ -111,6 +120,7 @@
                       {% assign color_marker = '||' | append: color_value | append: '||' %}
                       {% unless color_values contains color_marker %}
                         {% assign color_values = color_values | append: color_marker %}
+
                         {% assign color_css = '#dddddd' %}
                         {% assign color_name = color_value | downcase | strip %}
                         {% case color_name %}
@@ -144,14 +154,32 @@
                           data-variant-id="{{ variant.id }}"
                           data-variant-price="{{ variant.price | money | escape }}"
                           data-variant-available="{{ variant.available }}"
+                          data-variant-image="{{ variant.featured_image | image_url: width: 1000 }}"
+                          data-variant-url="{{ product.url }}?variant={{ variant.id }}"
                           aria-label="{{ color_value | escape }}"
                           title="{{ color_value | escape }}"
-                          style="background-color: {{ color_css }};{% if variant.featured_image %}background-image:url('{{ variant.featured_image | image_url: width: 80 }}');{% endif %}"
+                          style="background-color: {{ color_css }};"
                         >
                           <span>{{ color_value | slice: 0, 1 }}</span>
                         </button>
                       {% endunless %}
                     {% endfor %}
+
+                    {% if color_count > desktop_limit %}
+                      {% assign remaining_desktop = color_count | minus: desktop_limit %}
+                      <span class="collection-product-card__swatch-more collection-product-card__swatch-more--desktop" aria-label="{{ remaining_desktop }} more colors available">
+                        +
+                      </span>
+                      {% comment %} {{ remaining_desktop }} {% endcomment %}
+                    {% endif %}
+
+                    {% if color_count > mobile_limit %}
+                      {% assign remaining_mobile = color_count | minus: mobile_limit %}
+                      <span class="collection-product-card__swatch-more collection-product-card__swatch-more--mobile" aria-label="{{ remaining_mobile }} more colors available">
+                        +
+                      </span>
+                      {% comment %} {{ remaining_mobile }} {% endcomment %}
+                    {% endif %}
                   </div>
                 {% endif %}
               {% endif %}
@@ -167,10 +195,7 @@
                     aria-label="{{ section.settings.add_to_cart_text | escape }}"
                     {% unless first_available_variant.available %}disabled{% endunless %}
                   >
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path d="M7 8h10l1 12H6L7 8Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                      <path d="M9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
+                    <img src="{{ section.settings.cart_icon | img_url:'master' }}" width="35%">
                     <span class="collection-product-card__cart-label" data-add-to-cart-text>
                       {% if first_available_variant.available %}
                         {{ section.settings.add_to_cart_text }}
@@ -350,6 +375,9 @@
   #collection-products-{{ section.id }} .collection-product-card__info {
     padding: {{ section.settings.card_padding }}px 2px 0;
     font-family: {{ section.settings.product_font.family }}, {{ section.settings.product_font.fallback_families }};
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
   }
 
   #collection-products-{{ section.id }} .collection-product-card__info h3 {
@@ -362,6 +390,7 @@
 
   #collection-products-{{ section.id }} .collection-product-card__info h3 a {
     color: inherit;
+    font-family: Helvetica;
     text-decoration: none;
   }
 
@@ -372,6 +401,11 @@
     opacity: 0.65;
     font-size: var(--product-info-size);
     line-height: 1.2;
+    font-family: Helvetica;
+  }
+
+  #collection-products-{{ section.id }} .collection-product-card__vendor {
+    color: #666666;
   }
 
   #collection-products-{{ section.id }} .collection-product-card__price {
@@ -379,6 +413,7 @@
     font-size: var(--price-size);
     line-height: 1.2;
     font-weight: {{ section.settings.price_weight }};
+    font-family: Helvetica;
   }
 
   #collection-products-{{ section.id }} .collection-product-card__compare {
@@ -400,7 +435,7 @@
     max-width: calc(100% - 65px);
     padding: 7px 9px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.80);
     backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(7px);
   }
@@ -436,6 +471,28 @@
 
   #collection-products-{{ section.id }} .collection-product-card__swatch:hover {
     transform: scale(1.08);
+  }
+
+  #collection-products-{{ section.id }} .collection-product-card__swatch-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    border-radius: 50%;
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 1;
+  }
+
+  #collection-products-{{ section.id }} .collection-product-card__swatch:nth-of-type(n+{{ section.settings.swatch_limit_desktop | plus: 1 }}) {
+    display: none;
+  }
+
+  #collection-products-{{ section.id }} .collection-product-card__swatch-more--mobile {
+    display: none;
   }
 
   #collection-products-{{ section.id }} .collection-product-card__cart-form {
@@ -536,6 +593,18 @@
     #collection-products-{{ section.id }} .collection-product-card__vendor {
       font-size: 9px;
     }
+
+    #collection-products-{{ section.id }} .collection-product-card__swatch:nth-of-type(n+{{ section.settings.swatch_limit_mobile | plus: 1 }}) {
+      display: none;
+    }
+
+    #collection-products-{{ section.id }} .collection-product-card__swatch-more--desktop {
+      display: none;
+    }
+
+    #collection-products-{{ section.id }} .collection-product-card__swatch-more--mobile {
+      display: inline-flex;
+    }
   }
 </style>
 
@@ -550,9 +619,32 @@
       const input = card.querySelector('[data-variant-id-input]');
       const button = card.querySelector('[data-add-to-cart-button]');
       const buttonText = card.querySelector('[data-add-to-cart-text]');
+      const image = card.querySelector('.collection-product-card__img');
+      const link = card.querySelector('.collection-product-card__image');
       if (!wrapper || !input || !button) return;
 
       const swatches = wrapper.querySelectorAll('[data-color-value]');
+
+      function selectSwatch(swatch) {
+        swatches.forEach(function(item) { item.classList.remove('is-active'); });
+        swatch.classList.add('is-active');
+
+        input.value = swatch.dataset.variantId;
+
+        const available = swatch.dataset.variantAvailable === 'true';
+        button.disabled = !available;
+        if (buttonText) {
+          buttonText.textContent = available
+            ? '{{ section.settings.add_to_cart_text | escape }}'
+            : '{{ section.settings.sold_out_text | escape }}';
+        }
+
+      
+        if (link && swatch.dataset.variantUrl) {
+          link.href = swatch.dataset.variantUrl;
+        }
+      }
+
       let initialSwatch = null;
       swatches.forEach(function(swatch) {
         if (!initialSwatch && swatch.dataset.variantAvailable === 'true') {
@@ -560,29 +652,14 @@
         }
       });
       if (initialSwatch) {
-        swatches.forEach(function(item) { item.classList.remove('is-active'); });
-        initialSwatch.classList.add('is-active');
-        input.value = initialSwatch.dataset.variantId;
-        button.disabled = false;
+        selectSwatch(initialSwatch);
       }
 
       swatches.forEach(function(swatch) {
         swatch.addEventListener('click', function(event) {
           event.preventDefault();
           event.stopPropagation();
-
-          swatches.forEach(function(item) { item.classList.remove('is-active'); });
-          swatch.classList.add('is-active');
-
-          input.value = swatch.dataset.variantId;
-          const available = swatch.dataset.variantAvailable === 'true';
-          button.disabled = !available;
-
-          if (buttonText) {
-            buttonText.textContent = available
-              ? '{{ section.settings.add_to_cart_text | escape }}'
-              : '{{ section.settings.sold_out_text | escape }}';
-          }
+          selectSwatch(swatch);
         });
       });
     }
@@ -717,10 +794,32 @@
       "info": "Automatically detects a product option named Color or Colour and displays its variants."
     },
     {
+      "type": "range",
+      "id": "swatch_limit_desktop",
+      "label": "Max visible swatches (desktop)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "swatch_limit_mobile",
+      "label": "Max visible swatches (mobile)",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 3
+    },
+    {
       "type": "checkbox",
       "id": "show_add_to_cart",
       "label": "Show add to cart button",
       "default": true
+    },{
+      "type": "image_picker",
+      "id": "cart_icon",
+      "label": "Select an Image"
     },
     {
       "type": "text",
@@ -963,7 +1062,7 @@
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#222222"
+      "default": "#666666"
     },
     {
       "type": "color",

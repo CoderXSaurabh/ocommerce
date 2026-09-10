@@ -3635,3 +3635,10 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+
+/* Loox CSS */
+.loox-floating-widget-btn svg.loox-icon {
+    font-size: 16px;
+    display: none;
+}
