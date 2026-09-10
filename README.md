@@ -38,7 +38,9 @@ All three are added to the home page in the theme editor, and each is a standalo
 reusable section with its own schema that can be added, removed, and reordered
 independently.
 
-**Countdown zero-state:** - When Countdown reaches to zero it will show message The wait is over! 
+**Countdown zero-state:** 
+- When Countdown reaches to zero it will show message The wait is over!
+- The Minutes option is missing from the Figma design, so I have added conditional buttons to independently show or hide Days, Hours, Minutes, and Seconds.
 
 **Newsletter signup:** wired to Shopify's native customer/newsletter form
 (`<form type you used, e.g. {% form 'customer' %}>`), with success and error states
