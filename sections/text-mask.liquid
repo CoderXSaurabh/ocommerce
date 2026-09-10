@@ -1,0 +1,339 @@
+<section
+  id="best-sellers-{{ section.id }}"
+  class="best-sellers-image-text"
+  style="
+    --section-bg: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+    --text-size: {{ section.settings.text_size }}px;
+    --text-weight: {{ section.settings.text_weight }};
+    --letter-spacing: {{ section.settings.letter_spacing }}px;
+    --section-width: {{ section.settings.section_width }}px;
+    --padding-top: {{ section.settings.padding_top }}px;
+    --padding-bottom: {{ section.settings.padding_bottom }}px;
+    --mobile-text-size: {{ section.settings.mobile_text_size }}px;
+  "
+>
+  <div class="best-sellers-image-text__inner">
+
+    {% if section.settings.image != blank %}
+      <h1
+        class="best-sellers-image-text__heading"
+        style="
+          --text-image: url('{{ section.settings.image | image_url: width: 2400 }}');
+          font-family: 'pinyon script';
+          font-style: {{ section.settings.text_style }};
+          text-transform: {{ section.settings.text_transform }};
+          
+        "
+      >
+        {{ section.settings.heading }}
+      </h1>
+    {% else %}
+      <h1
+        class="best-sellers-image-text__heading best-sellers-image-text__heading--plain"
+        style="
+          font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+          font-style: {{ section.settings.text_style }};
+          text-transform: {{ section.settings.text_transform }};
+        "
+      >
+        {{ section.settings.heading }}
+      </h1>
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  {% comment %} Select and loads the font {% endcomment %}
+  {{ section.settings.heading_font | font_face }}
+
+  #best-sellers-{{ section.id }} {
+    width: 100%;
+    background: var(--section-bg);
+    color: var(--text-color);
+    overflow: hidden;
+  }
+
+  #best-sellers-{{ section.id }} .best-sellers-image-text__inner {
+    width: min(100% - 40px, var(--section-width));
+    margin: 0 auto;
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #best-sellers-{{ section.id }} .best-sellers-image-text__inner {
+    line-height: calc({{ 'var(--text-size)' }} + 40px);
+  }
+  #best-sellers-{{ section.id }} .best-sellers-image-text__heading p{
+    margin : 0;
+  }
+  #best-sellers-{{ section.id }} .best-sellers-image-text__heading p strong{
+    font-weight: 400;
+    font-family: 'instrument serif';
+  }
+  #best-sellers-{{ section.id }} .best-sellers-image-text__heading {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    font-size: var(--text-size);
+    line-height: 0.82;
+    font-weight: var(--text-weight);
+    letter-spacing: var(--letter-spacing);
+    color: var(--text-color);
+    display: inline-block;
+  }
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    #best-sellers-{{ section.id }} .best-sellers-image-text__heading {
+      background-image: var(--text-image);
+      background-size: {{ section.settings.image_size }};
+      background-position: {{ section.settings.image_position }};
+      background-repeat: no-repeat;
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+  }
+
+  #best-sellers-{{ section.id }} .best-sellers-image-text__heading--plain {
+    background-image: none;
+    -webkit-text-fill-color: initial;
+    color: var(--text-color);
+  }
+
+  @media screen and (max-width: 749px) {
+    #best-sellers-{{ section.id }} .best-sellers-image-text__inner {
+      width: min(100% - 24px, var(--section-width));
+      padding-top: calc(var(--padding-top) * 0.7);
+      padding-bottom: calc(var(--padding-bottom) * 0.7);
+    }
+
+    #best-sellers-{{ section.id }} .best-sellers-image-text__heading {
+      font-size: var(--mobile-text-size);
+      line-height: 0.86;
+    }
+   
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Best sellers image text",
+  "tag": "section",
+  "class": "best-sellers-image-text-section",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Best sellers</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Text background image",
+      "info": "This image is clipped inside the heading letters."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Fallback text color",
+      "default": "#222222"
+    },
+    {
+      "type": "select",
+      "id": "text_style",
+      "label": "Text style",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "italic",
+          "label": "Italic"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text case",
+      "options": [
+        {
+          "value": "none",
+          "label": "As entered"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Desktop text size",
+      "min": 40,
+      "max": 260,
+      "step": 5,
+      "default": 170,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_size",
+      "label": "Mobile text size",
+      "min": 30,
+      "max": 130,
+      "step": 5,
+      "default": 75,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Text weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": -5,
+      "max": 10,
+      "step": 0.5,
+      "default": -5,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_size",
+      "label": "Image scale inside text",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "100% 100%",
+          "label": "Stretch"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "center center",
+          "label": "Center"
+        },
+        {
+          "value": "left center",
+          "label": "Left"
+        },
+        {
+          "value": "right center",
+          "label": "Right"
+        },
+        {
+          "value": "center top",
+          "label": "Top"
+        },
+        {
+          "value": "center bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "range",
+      "id": "section_width",
+      "label": "Maximum section width",
+      "min": 600,
+      "max": 1800,
+      "step": 20,
+      "default": 1400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 20,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best sellers image text"
+    }
+  ]
+}
+{% endschema %}

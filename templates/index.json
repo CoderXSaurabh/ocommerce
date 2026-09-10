@@ -66,7 +66,7 @@
       }
     },
     "multicolumn_test2_wqp7RV": {
-      "type": "multicolumn-test2",
+      "type": "drop-teaser",
       "blocks": {
         "countdown_XMXLXr": {
           "type": "countdown",
@@ -79,12 +79,12 @@
             "heading": "",
             "subheading": "Stay tuned",
             "end_date": "2026-9-19",
-            "end_time": "23:59",
+            "end_time": "08:50",
             "timezone_offset": -5,
             "show_days": true,
             "show_hours": true,
-            "show_minutes": true,
-            "show_seconds": false,
+            "show_minutes": false,
+            "show_seconds": true,
             "days_label": "Days",
             "hours_label": "Hours",
             "minutes_label": "Minutes",
@@ -161,7 +161,7 @@
       }
     },
     "best_seller_test3_EXdNdM": {
-      "type": "best-seller-test3",
+      "type": "text-mask",
       "name": "Best sellers image text",
       "settings": {
         "heading": "<p>Best <strong>sellers</strong></p>",
@@ -183,7 +183,7 @@
       }
     },
     "collection_test2_iJ9Gxw": {
-      "type": "collection-test2",
+      "type": "featured-collection-card",
       "name": "Collection products",
       "settings": {
         "collection": "frontpage",

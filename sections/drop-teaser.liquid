@@ -1,0 +1,1628 @@
+{{ 'section-multicolumn-test2.css' | asset_url | stylesheet_tag }}
+<section
+  id="coming-soon-{{ section.id }}"
+  class="coming-soon-section"
+  style="
+    --section-width: {{ section.settings.section_width }}px;
+    --gap: {{ section.settings.block_gap }}px;
+    --radius: {{ section.settings.border_radius }}px;
+    --section-bg: {{ section.settings.section_background }};
+    --global-text: {{ section.settings.global_text_color }};
+  "
+>
+  <div class="coming-soon-wrapper page-width">
+
+    {% for block in section.blocks %}
+
+      {% if block.type == 'countdown' %}
+
+        <div
+          class="coming-soon-block countdown-block"
+          {{ block.shopify_attributes }}
+          style="
+            --content-position: {{ block.settings.content_position }};
+            --overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+            --overlay-color: {{ block.settings.overlay_color }};
+            --block-background: {{ block.settings.background_color }};
+            --countdown-text: {{ block.settings.text_color }};
+            --timer-bg: {{ block.settings.timer_background }};
+            --timer-text: {{ block.settings.timer_text_color }};
+            --heading-font: {{ block.settings.heading_font.family | escape }}, {{ block.settings.heading_font.fallback_families | escape }};
+            --body-font: {{ block.settings.body_font.family | escape }}, {{ block.settings.body_font.fallback_families | escape }};
+            --heading-style: {{ block.settings.heading_style }};
+            --heading-size: {{ block.settings.heading_size }}px;
+            --heading-weight: {{ block.settings.heading_weight }};
+            --small-heading-size: {{ block.settings.small_heading_size }}px;
+            --subheading-size: {{ block.settings.subheading_size }}px;
+            --body-weight: {{ block.settings.body_weight }};
+            --letter-spacing: {{ block.settings.letter_spacing }}px;
+            --timer-size: {{ block.settings.timer_size }}px;
+            --timer-letter-spacing: {{ block.settings.timer_letter_spacing }}px;
+            --timer-weight: {{ block.settings.timer_weight }};
+            --label-size: {{ block.settings.label_size }}px;
+            --small-heading-image-width: {{ block.settings.small_heading_image_width }}px;
+            --small-heading-image-height: {{ block.settings.small_heading_image_height }}px;
+          "
+        >
+
+          {% if block.settings.image != blank %}
+            {{
+              block.settings.image
+              | image_url: width: 1600
+              | image_tag:
+                loading: 'lazy',
+                widths: '400, 600, 800, 1000, 1200, 1600',
+                sizes: '(max-width: 749px) 100vw, 50vw',
+                class: 'coming-soon-image',
+                    title:'background'
+            }}
+          {% else %}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'coming-soon-image placeholder-image' }}
+          {% endif %}
+
+          <div class="countdown-overlay"></div>
+
+          <div class="countdown-content">
+
+            {% if block.settings.small_heading_image != blank %}
+              <div class="countdown-small-heading countdown-small-heading-image">
+                {{
+                  block.settings.small_heading_image
+                  | image_url: width: 1000
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'countdown-small-heading-image-element',
+                    title:'background'
+                }}
+              </div>
+            {% elsif block.settings.small_heading != blank %}
+              <div class="countdown-small-heading">
+                {{ block.settings.small_heading }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.heading != blank %}
+              <h2 class="countdown-heading">
+                {{ block.settings.heading }}
+              </h2>
+            {% endif %}
+
+            {% if block.settings.subheading != blank %}
+              <div class="countdown-subheading">
+                {{ block.settings.subheading }}
+              </div>
+            {% endif %}
+
+            <div
+              class="countdown-timer"
+              data-countdown
+              data-date="{{ block.settings.end_date }}"
+              data-time="{{ block.settings.end_time }}"
+              data-offset="{{ block.settings.timezone_offset }}"
+              data-show-days="{{ block.settings.show_days }}"
+              data-show-hours="{{ block.settings.show_hours }}"
+              data-show-minutes="{{ block.settings.show_minutes }}"
+              data-show-seconds="{{ block.settings.show_seconds }}"
+            >
+
+              {% if block.settings.show_days %}
+                <div class="countdown-item countdown-days-wrapper">
+                  <span class="countdown-number" data-days>00</span>
+                  <span class="countdown-label">{{ block.settings.days_label }}</span>
+                </div>
+                :
+              {% endif %}
+
+              {% if block.settings.show_hours %}
+                <div class="countdown-item countdown-hours-wrapper">
+                  <span class="countdown-number" data-hours>00</span>
+                  <span class="countdown-label">{{ block.settings.hours_label }}</span>
+                </div>
+                {% if block.settings.show_minutes %}
+                  :
+                {% endif %}
+              {% endif %}
+
+              {% if block.settings.show_minutes %}
+                <div class="countdown-item countdown-minutes-wrapper">
+                  <span class="countdown-number" data-minutes>00</span>
+                  <span class="countdown-label">{{ block.settings.minutes_label }}</span>
+                </div>
+                
+              {% endif %}
+              {% if block.settings.show_seconds %}
+                  :
+              {% endif %}
+
+              {% if block.settings.show_seconds %}
+                <div class="countdown-item countdown-seconds-wrapper">
+                  <span class="countdown-number" data-seconds>00</span>
+                  <span class="countdown-label">{{ block.settings.seconds_label }}</span>
+                </div>
+              {% endif %}
+
+            </div>
+
+            <div class="countdown-expired" data-expired>
+              {{ block.settings.expired_text }}
+            </div>
+
+          </div>
+
+        </div>
+
+      {% elsif block.type == 'newsletter' %}
+
+        <div
+          class="coming-soon-block newsletter-block"
+          {{ block.shopify_attributes }}
+          style="
+            --content-position: {{ block.settings.content_position }};
+            --overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+            --overlay-color: {{ block.settings.overlay_color }};
+            --block-background: {{ block.settings.background_color }};
+            --newsletter-heading-color: {{ block.settings.heading_color }};
+            --newsletter-text-color: {{ block.settings.text_color }};
+            --newsletter-form-color: {{ block.settings.form_color }};
+            --newsletter-button-color: {{ block.settings.button_color }};
+            --heading-font: {{ block.settings.heading_font.family | escape }}, {{ block.settings.heading_font.fallback_families | escape }};
+            --body-font: {{ block.settings.body_font.family | escape }}, {{ block.settings.body_font.fallback_families | escape }};
+            --heading-style: {{ block.settings.heading_style }};
+            --heading-size: {{ block.settings.heading_size }}px;
+            --heading-weight: {{ block.settings.heading_weight }};
+            --letter-spacing: {{ block.settings.letter_spacing }}px;
+            --description-size: {{ block.settings.description_size }}px;
+            --form-size: {{ block.settings.form_size }}px;
+            --button-size: {{ block.settings.button_size }}px;
+            --button-weight: {{ block.settings.button_weight }};
+            --message-size: {{ block.settings.message_size }}px;
+          "
+        >
+
+          {% if block.settings.image != blank %}
+            {{
+              block.settings.image
+              | image_url: width: 1600
+              | image_tag:
+                loading: 'lazy',
+                widths: '400, 600, 800, 1000, 1200, 1600',
+                sizes: '(max-width: 749px) 100vw, 50vw',
+                class: 'coming-soon-image2',
+                title:'background'
+            }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'coming-soon-image2 placeholder-image' }}
+          {% endif %}
+
+          <div class="newsletter-overlay"></div>
+
+          <div class="newsletter-content">
+
+            {% if block.settings.heading != blank %}
+              <h2 class="newsletter-heading">
+                {{ block.settings.heading }}
+              </h2>
+            {% endif %}
+
+            {% if block.settings.description != blank %}
+              <div class="newsletter-description">
+                {{ block.settings.description }}
+              </div>
+            {% endif %}
+            {% form 'customer', class: 'newsletter-form' %}
+              <input
+                type="hidden"
+                name="contact[tags]"
+                value="newsletter"
+              >
+              <div class="newsletter-input-wrapper">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  class="newsletter-email"
+                  value="{{ form.email }}"
+                  placeholder="{{ block.settings.email_placeholder }}"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  autocomplete="email"
+                  required
+                >
+                <button
+                  type="submit"
+                  class="newsletter-button"
+                >
+                  {{ block.settings.button_text }}
+                </button>
+              </div>
+              {% if form.errors %}
+                <div class="newsletter-message newsletter-error">
+                  {{ form.errors | default_errors }}
+                </div>
+              {% endif %}
+              {% if form.posted_successfully? %}
+                <div class="newsletter-message newsletter-success">
+                  {{ block.settings.success_message }}
+                </div>
+              {% endif %}
+            {% endform %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+<style>
+  {% for block in section.blocks %}
+    {% if block.type == 'countdown' %}
+      {{ block.settings.heading_font | font_face }}
+      {{ block.settings.body_font | font_face }}
+    {% elsif block.type == 'newsletter' %}
+      {{ block.settings.heading_font | font_face }}
+      {{ block.settings.body_font | font_face }}
+    {% endif %}
+  {% endfor %}
+
+  #coming-soon-{{ section.id }} {
+    width: 100%;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--section-bg);
+    color: var(--global-text);
+  }
+
+  #coming-soon-{{ section.id }} .coming-soon-wrapper {
+    width: 100%;
+   
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+    align-items: stretch;
+  }
+
+  #coming-soon-{{ section.id }} .coming-soon-block {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--block-background);
+    border-radius: var(--radius);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  #coming-soon-{{ section.id }} .coming-soon-image {
+    position: relative;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #coming-soon-{{ section.id }} .coming-soon-image2 {
+    position: relative;
+    inset: 0;
+    width: 100%;
+    height: 75%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #coming-soon-{{ section.id }} .placeholder-image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: #f5f5f5;
+  }
+
+
+  /* =========================================
+     OVERLAY
+  ========================================= */
+
+  #coming-soon-{{ section.id }} .countdown-overlay,
+  #coming-soon-{{ section.id }} .newsletter-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background: color-mix(
+      in srgb,
+      var(--overlay-color) calc(var(--overlay-opacity) * 100%),
+      transparent
+    );
+
+    pointer-events: none;
+  }
+
+
+  /* =========================================
+     COUNTDOWN CONTENT
+  ========================================= */
+
+  #coming-soon-{{ section.id }} .countdown-content {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: var(--content-position);
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 15px;
+    color: var(--countdown-text);
+    font-family: var(--body-font);
+  }
+
+
+  /* Small heading */
+
+  #coming-soon-{{ section.id }} .countdown-small-heading {
+
+    margin: 0 0 7px;
+
+    font-size: var(--small-heading-size);
+
+    line-height: 1.2;
+
+    letter-spacing: var(--letter-spacing);
+
+    font-weight: var(--body-weight);
+  }
+
+  #coming-soon-{{ section.id }} .countdown-small-heading-image {
+    width: min(var(--small-heading-image-width), 100%);
+  }
+
+  #coming-soon-{{ section.id }} .countdown-small-heading-image-element {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: var(--small-heading-image-height);
+    object-fit: contain;
+  }
+
+
+  /* Main heading */
+
+  #coming-soon-{{ section.id }} .countdown-heading {
+
+    margin: 0 0 12px;
+
+    font-family: var(--heading-font);
+    font-size: clamp(calc(var(--heading-size) * 0.75), 2vw, var(--heading-size));
+
+    line-height: 1.1;
+
+    font-weight: var(--heading-weight);
+    font-style: var(--heading-style);
+    letter-spacing: var(--letter-spacing);
+  }
+
+
+  /* Subheading */
+
+  #coming-soon-{{ section.id }} .countdown-subheading {
+
+    margin: 0 0 10px;
+
+    font-size: var(--subheading-size);
+
+    line-height: 1.2;
+    letter-spacing: var(--letter-spacing);
+  }
+
+
+  /* =========================================
+     COUNTDOWN TIMER
+  ========================================= */
+
+  #coming-soon-{{ section.id }} .countdown-timer {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 2px;
+  }
+
+  #coming-soon-{{ section.id }} .countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 27px;
+  }
+
+  #coming-soon-{{ section.id }} .countdown-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    background: var(--timer-bg);
+    color: var(--timer-text);
+    border-radius: 2px;
+    box-sizing: border-box;
+    font-size: var(--timer-size);
+    line-height: 1;
+    letter-spacing: var(--timer-letter-spacing);
+    font-weight: var(--timer-weight);
+  }
+
+
+  /* Timer labels */
+
+  #coming-soon-{{ section.id }} .countdown-label {
+    font-family: 'pinyon script';
+    margin-top: 5px;
+    font-size: var(--label-size);
+    line-height: 1;
+    font-weight: var(--body-weight);
+    letter-spacing: var(--letter-spacing);
+    text-transform: none;
+  }
+
+
+  /* Expired */
+
+  #coming-soon-{{ section.id }} .countdown-expired {
+
+    display: none;
+
+    margin-top: 10px;
+
+    font-size: 10px;
+  }
+
+
+  #coming-soon-{{ section.id }} .newsletter-content {
+    position: relative;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: var(--content-position);
+    justify-content: center;
+    text-align: left;
+    padding: 15px;
+    color: var(--newsletter-text-color);
+    font-family: var(--body-font);
+  }
+
+
+  /* Newsletter heading */
+
+  #coming-soon-{{ section.id }} .newsletter-heading {
+
+    margin: 0 0 10px;
+
+    font-family: var(--heading-font);
+    font-size: clamp(calc(var(--heading-size) * 0.75), 2vw, var(--heading-size));
+
+    line-height: 1.05;
+
+    font-weight: var(--heading-weight);
+    font-style: var(--heading-style);
+    letter-spacing: var(--letter-spacing);
+    color: var(--newsletter-heading-color);
+  }
+
+
+  /* Newsletter description */
+
+  #coming-soon-{{ section.id }} .newsletter-description {
+
+    width: 100%;
+    margin: 0 0 12px;
+
+    font-size: var(--description-size);
+
+    line-height: 1.3;
+    letter-spacing: var(--letter-spacing);
+  }
+
+
+  /* Remove default paragraph margin */
+
+  #coming-soon-{{ section.id }} .newsletter-description p {
+    font-family: Inter, sans-serif;
+    margin: 0;
+  }
+
+  #coming-soon-{{ section.id }} .newsletter-form {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+
+  #coming-soon-{{ section.id }} .newsletter-input-wrapper {
+
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    border-bottom: 1px solid var(--newsletter-form-color);
+
+    padding-bottom: 5px;
+  }
+
+
+  /* Email */
+
+  #coming-soon-{{ section.id }} .newsletter-email {
+
+    flex: 1;
+
+    min-width: 0;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    padding: 3px 5px;
+
+    color: var(--newsletter-form-color);
+
+    font-size: var(--form-size);
+
+    line-height: 1.2;
+  }
+
+
+  #coming-soon-{{ section.id }} .newsletter-email::placeholder {
+
+    color: currentColor;
+
+    opacity: 0.65;
+  }
+
+
+  #coming-soon-{{ section.id }} .newsletter-button {
+    flex-shrink: 0;
+    border: 0;
+    background: transparent;
+    color: var(--newsletter-button-color);
+    padding: 3px 0 3px 8px;
+    cursor: pointer;
+    font-size: var(--button-size);
+    line-height: 1;
+    font-weight: var(--button-weight);
+    text-transform: uppercase;
+    white-space: nowrap;
+    font-family: Inter, sans-serif;
+  }
+
+
+  /* Form messages */
+
+  #coming-soon-{{ section.id }} .newsletter-message {
+
+    margin-top: 7px;
+
+    font-size: var(--message-size);
+  }
+
+
+  /* =========================================
+     MOBILE
+  ========================================= */
+
+  @media screen and (max-width: 749px) {
+
+    #coming-soon-{{ section.id }} {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+
+    #coming-soon-{{ section.id }} .coming-soon-wrapper {
+
+      width: calc(100% - 20px);
+
+      max-width: none;
+
+      grid-template-columns: 1fr;
+
+      gap: 8px;
+    }
+
+    #coming-soon-{{ section.id }} .coming-soon-block {
+
+      aspect-ratio: auto;
+    }
+
+    #coming-soon-{{ section.id }} .countdown-content,
+    #coming-soon-{{ section.id }} .newsletter-content {
+
+      padding: 20px;
+    }
+
+    #coming-soon-{{ section.id }} .countdown-heading,
+    #coming-soon-{{ section.id }} .newsletter-heading {
+
+      font-size: 24px;
+    }
+
+    #coming-soon-{{ section.id }} .countdown-number {
+
+      width: 36px;
+      min-width: 36px;
+      height: 36px;
+
+      font-size: var(--timer-size);
+    }
+
+    #coming-soon-{{ section.id }} .countdown-item {
+
+      min-width: 32px;
+    }
+
+  }
+
+</style>
+<script>
+
+  (function () {
+
+    function initCountdowns() {
+
+      const section = document.querySelector(
+        '#coming-soon-{{ section.id }}'
+      );
+
+      if (!section) return;
+
+      const timers = section.querySelectorAll('[data-countdown]');
+
+      timers.forEach(function(timer) {
+
+        if (timer.dataset.initialized === 'true') return;
+
+        timer.dataset.initialized = 'true';
+
+        const endDate = timer.dataset.date;
+        const endTime = timer.dataset.time || '00:00';
+
+        /*
+          timezone_offset:
+          -5 = EST
+          -4 = EDT
+          0 = UTC
+          5.5 = IST
+        */
+
+        const timezoneOffset = parseFloat(
+          timer.dataset.offset || '-5'
+        );
+
+        /*
+          Parse the merchant-entered date/time manually so both
+          YYYY-MM-DD and YYYY-M-D formats work reliably.
+        */
+        const dateMatch = String(endDate || '').trim().match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+        const timeMatch = String(endTime || '00:00').trim().match(/^(\d{1,2}):(\d{2})$/);
+
+        let utcTarget = null;
+
+        if (dateMatch && timeMatch) {
+          const year = Number(dateMatch[1]);
+          const month = Number(dateMatch[2]);
+          const day = Number(dateMatch[3]);
+          const hours = Number(timeMatch[1]);
+          const minutes = Number(timeMatch[2]);
+
+          const localAsUtc = Date.UTC(year, month - 1, day, hours, minutes, 0);
+          const parsedDate = new Date(localAsUtc);
+
+          /* Convert selected timezone time to UTC. */
+          utcTarget = new Date(
+            parsedDate.getTime() -
+            (timezoneOffset * 60 * 60 * 1000)
+          );
+        }
+
+        const daysElement = timer.querySelector('[data-days]');
+        const hoursElement = timer.querySelector('[data-hours]');
+        const minutesElement = timer.querySelector('[data-minutes]');
+        const secondsElement = timer.querySelector('[data-seconds]');
+
+        const expiredElement =
+          timer.parentElement.querySelector('[data-expired]');
+
+        function updateCountdown() {
+
+          if (!utcTarget || Number.isNaN(utcTarget.getTime())) {
+            if (daysElement) daysElement.textContent = '00';
+            if (hoursElement) hoursElement.textContent = '00';
+            if (minutesElement) minutesElement.textContent = '00';
+            if (secondsElement) secondsElement.textContent = '00';
+            return;
+          }
+
+          const now = new Date();
+
+          const difference =
+            utcTarget.getTime() - now.getTime();
+
+          if (difference <= 0) {
+
+            if (daysElement) daysElement.textContent = '00';
+            if (hoursElement) hoursElement.textContent = '00';
+            if (minutesElement) minutesElement.textContent = '00';
+            if (secondsElement) secondsElement.textContent = '00';
+
+            if (expiredElement) {
+              expiredElement.style.display = 'block';
+            }
+
+            clearInterval(interval);
+
+            return;
+          }
+
+          const totalSeconds =
+            Math.floor(difference / 1000);
+
+          const days =
+            Math.floor(totalSeconds / 86400);
+
+          const hours =
+            Math.floor((totalSeconds % 86400) / 3600);
+
+          const minutes =
+            Math.floor((totalSeconds % 3600) / 60);
+
+          const seconds =
+            totalSeconds % 60;
+
+          if (daysElement) {
+            daysElement.textContent =
+              String(days).padStart(2, '0');
+          }
+
+          if (hoursElement) {
+            hoursElement.textContent =
+              String(hours).padStart(2, '0');
+          }
+
+          if (minutesElement) {
+            minutesElement.textContent =
+              String(minutes).padStart(2, '0');
+          }
+
+          if (secondsElement) {
+            secondsElement.textContent =
+              String(seconds).padStart(2, '0');
+          }
+
+        }
+
+        updateCountdown();
+
+        const interval =
+          setInterval(updateCountdown, 1000);
+
+      });
+
+    }
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      initCountdowns
+    );
+
+    document.addEventListener(
+      'shopify:section:load',
+      initCountdowns
+    );
+
+    initCountdowns();
+
+  })();
+
+</script>
+
+
+{% schema %}
+
+{
+  "name": "Coming soon + newsletter",
+  "tag": "section",
+  "class": "coming-soon-newsletter-section",
+  "max_blocks": 2,
+  "blocks": [
+
+    {
+      "type": "countdown",
+      "name": "Coming soon",
+      "settings": [
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Banner image"
+        },
+
+        {
+          "type": "text",
+          "id": "small_heading",
+          "label": "Small heading text",
+          "default": "New drop coming soon"
+        },
+
+        {
+          "type": "image_picker",
+          "id": "small_heading_image",
+          "label": "Small heading image",
+          "info": "Optional. When selected, this image replaces the small heading text."
+        },
+
+        {
+          "type": "range",
+          "id": "small_heading_image_width",
+          "label": "Small heading image width",
+          "min": 50,
+          "max": 500,
+          "step": 5,
+          "default": 220,
+          "unit": "px"
+        },
+
+        {
+          "type": "range",
+          "id": "small_heading_image_height",
+          "label": "Small heading image max height",
+          "min": 20,
+          "max": 200,
+          "step": 5,
+          "default": 60,
+          "unit": "px"
+        },
+
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "New Collection"
+        },
+
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Stay tuned"
+        },
+
+        {
+          "type": "header",
+          "content": "Countdown"
+        },
+
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "End date",
+          "default": "2026-12-31",
+          "info": "Use YYYY-MM-DD format"
+        },
+
+        {
+          "type": "text",
+          "id": "end_time",
+          "label": "End time",
+          "default": "23:59",
+          "info": "Use 24-hour format, for example 23:59"
+        },
+
+        {
+          "type": "range",
+          "id": "timezone_offset",
+          "label": "Timezone offset",
+          "min": -12,
+          "max": 14,
+          "step": 0.5,
+          "default": -5,
+          "unit": "hrs",
+          "info": "EST = -5. EDT = -4. IST = +5.5. This controls the timezone of the countdown end time."
+        },
+
+        {
+          "type": "checkbox",
+          "id": "show_days",
+          "label": "Show days",
+          "default": true
+        },
+
+        {
+          "type": "checkbox",
+          "id": "show_hours",
+          "label": "Show hours",
+          "default": true
+        },
+
+        {
+          "type": "checkbox",
+          "id": "show_minutes",
+          "label": "Show minutes",
+          "default": true
+        },
+
+        {
+          "type": "checkbox",
+          "id": "show_seconds",
+          "label": "Show seconds",
+          "default": true
+        },
+
+        {
+          "type": "text",
+          "id": "days_label",
+          "label": "Days label",
+          "default": "days"
+        },
+
+        {
+          "type": "text",
+          "id": "hours_label",
+          "label": "Hours label",
+          "default": "hours"
+        },
+
+        {
+          "type": "text",
+          "id": "minutes_label",
+          "label": "Minutes label",
+          "default": "minutes"
+        },
+
+        {
+          "type": "text",
+          "id": "seconds_label",
+          "label": "Seconds label",
+          "default": "seconds"
+        },
+
+        {
+          "type": "text",
+          "id": "expired_text",
+          "label": "Expired message",
+          "default": "The wait is over!"
+        },
+
+        {
+          "type": "header",
+          "content": "Design"
+        },
+
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content alignment",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Image overlay",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "default": 10,
+          "unit": "%"
+        },
+
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay color",
+          "default": "#000000"
+        },
+
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Block background",
+          "default": "#4b1f0a"
+        },
+
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#ffffff"
+        },
+
+        {
+          "type": "color",
+          "id": "timer_background",
+          "label": "Timer background",
+          "default": "#f5eee8"
+        },
+
+        {
+          "type": "color",
+          "id": "timer_text_color",
+          "label": "Timer text color",
+          "default": "#25160f"
+        },
+
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+
+        {
+          "type": "font_picker",
+          "id": "heading_font",
+          "label": "Heading font",
+          "default": "helvetica_n4"
+        },
+
+        {
+          "type": "font_picker",
+          "id": "body_font",
+          "label": "Body font",
+          "default": "helvetica_n4"
+        },
+
+        {
+          "type": "select",
+          "id": "heading_style",
+          "label": "Heading style",
+          "options": [
+            { "value": "normal", "label": "Normal" },
+            { "value": "italic", "label": "Italic" }
+          ],
+          "default": "italic"
+        },
+
+        {
+          "type": "range",
+          "id": "heading_size",
+          "label": "Heading size",
+          "min": 16,
+          "max": 48,
+          "step": 1,
+          "default": 28,
+          "unit": "px"
+        },
+
+        {
+          "type": "select",
+          "id": "heading_weight",
+          "label": "Heading weight",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+
+        {
+          "type": "range",
+          "id": "small_heading_size",
+          "label": "Small heading size",
+          "min": 8,
+          "max": 20,
+          "step": 1,
+          "default": 10,
+          "unit": "px"
+        },
+
+        {
+          "type": "range",
+          "id": "subheading_size",
+          "label": "Subheading size",
+          "min": 8,
+          "max": 18,
+          "step": 1,
+          "default": 9,
+          "unit": "px"
+        },
+
+        {
+          "type": "select",
+          "id": "body_weight",
+          "label": "Body weight",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" }
+          ],
+          "default": "400"
+        },
+
+        {
+          "type": "range",
+          "id": "letter_spacing",
+          "label": "Text letter spacing",
+          "min": -1,
+          "max": 5,
+          "step": 0.5,
+          "default": 0,
+          "unit": "px"
+        },
+
+        {
+          "type": "range",
+          "id": "timer_size",
+          "label": "Timer number size",
+          "min": 8,
+          "max": 18,
+          "step": 1,
+          "default": 10,
+          "unit": "px"
+        },
+
+        {
+          "type": "range",
+          "id": "timer_letter_spacing",
+          "label": "Timer letter spacing",
+          "min": 0,
+          "max": 5,
+          "step": 0.5,
+          "default": 2,
+          "unit": "px"
+        },
+
+        {
+          "type": "select",
+          "id": "timer_weight",
+          "label": "Timer number weight",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" }
+          ],
+          "default": "500"
+        },
+
+        {
+          "type": "range",
+          "id": "label_size",
+          "label": "Timer label size",
+          "min": 6,
+          "max": 12,
+          "step": 1,
+          "default": 7,
+          "unit": "px"
+        }
+
+      ]
+    },
+
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Newsletter image"
+        },
+
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Sneak peak..."
+        },
+
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Get notified when we launch.</p>"
+        },
+
+        {
+          "type": "text",
+          "id": "email_placeholder",
+          "label": "Email placeholder",
+          "default": "your@email.com"
+        },
+
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Notify me"
+        },
+
+        {
+          "type": "text",
+          "id": "success_message",
+          "label": "Success message",
+          "default": "Thanks for subscribing!"
+        },
+
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content alignment",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Image overlay",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "default": 0,
+          "unit": "%"
+        },
+
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay color",
+          "default": "#000000"
+        },
+
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Block background",
+          "default": "#ffffff"
+        },
+
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading color",
+          "default": "#ffffff"
+        },
+
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Description color",
+          "default": "#25160f"
+        },
+
+        {
+          "type": "color",
+          "id": "form_color",
+          "label": "Email / line color",
+          "default": "#25160f"
+        },
+
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button color",
+          "default": "#25160f"
+        },
+
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+
+        {
+          "type": "font_picker",
+          "id": "heading_font",
+          "label": "Heading font",
+          "default": "helvetica_n4"
+        },
+
+        {
+          "type": "font_picker",
+          "id": "body_font",
+          "label": "Body font",
+          "default": "helvetica_n4"
+        },
+
+        {
+          "type": "select",
+          "id": "heading_style",
+          "label": "Heading style",
+          "options": [
+            { "value": "normal", "label": "Normal" },
+            { "value": "italic", "label": "Italic" }
+          ],
+          "default": "italic"
+        },
+
+        {
+          "type": "range",
+          "id": "heading_size",
+          "label": "Heading size",
+          "min": 16,
+          "max": 48,
+          "step": 1,
+          "default": 28,
+          "unit": "px"
+        },
+
+        {
+          "type": "select",
+          "id": "heading_weight",
+          "label": "Heading weight",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+
+        {
+          "type": "range",
+          "id": "description_size",
+          "label": "Description size",
+          "min": 8,
+          "max": 18,
+          "step": 1,
+          "default": 9,
+          "unit": "px"
+        },
+
+        {
+          "type": "range",
+          "id": "form_size",
+          "label": "Email text size",
+          "min": 7,
+          "max": 14,
+          "step": 1,
+          "default": 8,
+          "unit": "px"
+        },
+
+        {
+          "type": "range",
+          "id": "button_size",
+          "label": "Button text size",
+          "min": 7,
+          "max": 18,
+          "step": 1,
+          "default": 7,
+          "unit": "px"
+        },
+
+        {
+          "type": "select",
+          "id": "button_weight",
+          "label": "Button weight",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+
+        {
+          "type": "range",
+          "id": "letter_spacing",
+          "label": "Text letter spacing",
+          "min": -1,
+          "max": 5,
+          "step": 0.5,
+          "default": 0,
+          "unit": "px"
+        },
+
+        {
+          "type": "range",
+          "id": "message_size",
+          "label": "Message size",
+          "min": 7,
+          "max": 14,
+          "step": 1,
+          "default": 8,
+          "unit": "px"
+        }
+
+      ]
+    }
+
+  ],
+
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "Section colors"
+    },
+
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+
+    {
+      "type": "color",
+      "id": "global_text_color",
+      "label": "Global text color",
+      "default": "#25160f"
+    },
+
+    {
+      "type": "header",
+      "content": "Section layout"
+    },
+
+    {
+      "type": "range",
+      "id": "section_width",
+      "label": "Maximum width",
+      "min": 600,
+      "max": 1800,
+      "step": 20,
+      "default": 1200,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "block_gap",
+      "label": "Gap between blocks",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 10,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+
+    {
+      "type": "header",
+      "content": "Desktop spacing"
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20,
+      "unit": "px"
+    },
+
+    {
+      "type": "header",
+      "content": "Mobile spacing"
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 10,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 10,
+      "unit": "px"
+    }
+
+  ],
+
+  "presets": [
+    {
+      "name": "multicolumn test2",
+      "blocks": [
+        {
+          "type": "countdown"
+        },
+        {
+          "type": "newsletter"
+        }
+      ]
+    }
+  ]
+
+}
+
+{% endschema %}
