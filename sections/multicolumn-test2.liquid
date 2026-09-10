@@ -53,7 +53,8 @@
                 loading: 'lazy',
                 widths: '400, 600, 800, 1000, 1200, 1600',
                 sizes: '(max-width: 749px) 100vw, 50vw',
-                class: 'coming-soon-image'
+                class: 'coming-soon-image',
+                    title:'background'
             }}
           {% else %}
             {{ 'lifestyle-2' | placeholder_svg_tag: 'coming-soon-image placeholder-image' }}
@@ -70,7 +71,8 @@
                   | image_url: width: 1000
                   | image_tag:
                     loading: 'lazy',
-                    class: 'countdown-small-heading-image-element'
+                    class: 'countdown-small-heading-image-element',
+                    title:'background'
                 }}
               </div>
             {% elsif block.settings.small_heading != blank %}
@@ -183,7 +185,8 @@
                 loading: 'lazy',
                 widths: '400, 600, 800, 1000, 1200, 1600',
                 sizes: '(max-width: 749px) 100vw, 50vw',
-                class: 'coming-soon-image2'
+                class: 'coming-soon-image2',
+                title:'background'
             }}
           {% else %}
             {{ 'image' | placeholder_svg_tag: 'coming-soon-image2 placeholder-image' }}

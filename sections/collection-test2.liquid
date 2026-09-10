@@ -55,7 +55,8 @@
                     widths: '300, 500, 700, 900, 1000',
                     sizes: '(max-width: 749px) 50vw, 25vw',
                     class: 'collection-product-card__img',
-                    alt: product.featured_image.alt | default: product.title
+                    alt: product.featured_image.alt | default: product.title,
+                      title:'product image'
                 }}
               {% else %}
                 {{ 'product-1' | placeholder_svg_tag: 'collection-product-card__img placeholder' }}
@@ -71,7 +72,8 @@
                       widths: '300, 500, 700, 900, 1000',
                       sizes: '(max-width: 749px) 50vw, 25vw',
                       class: 'collection-product-card__img',
-                      alt: product.images[1].alt | default: product.title
+                      alt: product.images[1].alt | default: product.title,
+                      title:'product image'
                   }}
                 </div>
               {% endif %}
@@ -195,7 +197,7 @@
                     aria-label="{{ section.settings.add_to_cart_text | escape }}"
                     {% unless first_available_variant.available %}disabled{% endunless %}
                   >
-                    <img src="{{ section.settings.cart_icon | img_url:'master' }}" width="35%">
+                    <img src="{{ section.settings.cart_icon | img_url:'master' }}" width="35%" alt="cart icon" title="cart icon">
                     <span class="collection-product-card__cart-label" data-add-to-cart-text>
                       {% if first_available_variant.available %}
                         {{ section.settings.add_to_cart_text }}
