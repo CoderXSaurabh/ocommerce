@@ -1,7 +1,7 @@
 # Technical Assignment
 
-This repository contains two Shopify theme builds from the assignment's Figma file:
-[Test 1 — Landing page](#) and [Test 2 — Product card](#), built on top of the Dawn theme.
+This repository contains Shopify sections builds from the assignment's Figma file:
+Test 1 — Landing page and Test 2 — Product card, built on top of the Dawn theme.
 
 **Live preview:** https://ocommerce-vuiiets1.myshopify.com/
 **Storefront password:** demo
